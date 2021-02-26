@@ -46,39 +46,57 @@
     <div id="message"></div>
     <div class="row mt-2 pb-3">
 		
+
+    <?php
+  			require('./database/mysqli_connect/mysqli_connect.php');
+
+        $query = "SELECT * FROM product";
+  			$result = @mysqli_query($dbc, $query) or die("Error in db records : ". mysqli_error($dbc));
+  			while ($row = mysqli_fetch_assoc($result)):
+  		?>
+
 	
       <div class="col-sm-6 col-md-4 col-lg-3 mb-2">
         <div class="card-deck">
 
           <div class="card p-2 border-secondary mb-2">
-            <img class="card-img-top" height="250">
+            <img src="<?= $row['product_image'] ?>" class="card-img-top" height="250">
             <div class="card-body p-1">
-              <h4 class="card-title text-center text-info"></h4>
-              <h5 class="card-text text-center text-danger"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;</h5>
+              <h4 class="card-title text-center text-info">
+              <?php 
+              echo $row['product_name']; 
+              ?></h4>
+              <h5 class="card-text text-center text-danger"><i class="fas fa-dollar-sign">
+              </i>&nbsp;&nbsp;
+              <?php 
+              echo number_format($row['product_price'],2); 
+              ?></h5>
             </div>
             <div class="card-footer p-1">
-              <form method="post"class="form-submit">
+              <form method="post" action="action.php" class="form-submit">
                 <div class="row p-2">
                   <div class="col-md-6 py-1 pl-4">
                     <b>Quantity : </b>
                   </div>
                   <div class="col-md-6">
-                    <input type="number" class="form-control pqty" name="pqty">
+                    <input type="number" class="form-control pqty" name="pqty" value="<?php echo $row['product_qty']; ?>">
                   </div>
                 </div>
-                <input type="hidden" class="pid" name="pid">
-                <input type="hidden" class="pname" name="pname">
-                <input type="hidden" class="pprice" name="pprice">
-                <input type="hidden" class="pimage" name="pimage">
-                <input type="hidden" class="pcode" name="pcode">
-                
-                <button class="btn btn-info btn-block addItemBtn" name="button"><i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Add to
-                  cart</button>
+                <input type="hidden" class="pid" name="pid" value="<?php echo $row['id']; ?>">
+                <input type="hidden" class="pname" name="pname" value="<?php echo $row['product_name']; ?>">
+                <input type="hidden" class="pprice" name="pprice" value="<?php echo $row['product_price']; ?>">
+                <input type="hidden" class="pimage" name="pimage" value="<?php echo $row['product_image']; ?>">
+                <input type="hidden" class="pcode" name="pcode" value="<?php echo $row['product_code']; ?>">
+
+                <button class="btn btn-info btn-block addItemBtn" name="button">
+                    <i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Add to cart
+                </button>
               </form>
             </div>
           </div>
         </div>
       </div>
+      <?php endwhile; ?>
     </div>
   </div>
 
