@@ -1,16 +1,5 @@
-<?php 
-    require('./database/mysqli_connect/mysqli_connect.php');
-
-
-?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Checkout</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css' />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css' />
@@ -29,10 +18,13 @@
         </li>
       
         <li class="nav-item">
-          <a class="nav-link" href="final_checkout.php"><i class="fas fa-money-check-alt mr-2"></i>Checkout</a>
+                 <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i> 
+                 <span id="cart-item" class="badge badge-danger">Orders</span></a>
         </li>
+        
         <li class="nav-item">
-          <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i></a>
+           <a class="nav-link" href="final_checkout.php">
+           <i class="fas fa-money-check-alt mr-2"></i>Checkout</a>
         </li>
       </ul>
     </div>
@@ -41,34 +33,61 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-6 px-4 pb-4" id="order">
-        <h4 class="text-center text-info p-2">Complete your order!</h4>
-        <form action="action.php" method="post" id="placeOrder">
-          <input type="hidden" name="products" >
-          <input type="hidden" name="grand_total" >
-          <div class="form-group">
-            <input type="text" name="name" class="form-control" placeholder="Enter Name" required>
+        <h4 class="text-center text-info p-2">Enter the details</h4>
+        <form action="store_data.php" method="post">
+        <div class="form-group">
+            Full Name : <input type="text" name="full_name" class="form-control" placeholder="Enter your full name" required
+            value="<?php 
+              if(!empty($_POST['full_name'])){
+                echo $_POST['full_name'];
+              }
+            ?>" >
           </div>
           <div class="form-group">
-            <input type="email" name="email" class="form-control" placeholder="Enter E-Mail" required>
+            Email Address : <input type="email" name="email" class="form-control" placeholder="Enter your email address" required
+            value="<?php 
+              if(!empty($_POST['full_name'])){
+                echo $_POST['full_name'];
+              }
+            ?>">
           </div>
           <div class="form-group">
-            <input type="tel" name="phone" class="form-control" placeholder="Enter Phone" required>
+            Contact Number : <input type="number" name="phone" class="form-control" placeholder="Enter your contact number" required
+            value="<?php 
+              if(!empty($_POST['phone'])){
+                echo $_POST['phone'];
+              }
+            ?>">
           </div>
           <div class="form-group">
-            <textarea name="address" class="form-control" rows="3" cols="10" placeholder="Enter Delivery Address Here..."></textarea>
-          </div>
-          <h6 class="text-center lead">Select Payment Mode</h6>
-          <div class="form-group">
-            <select name="pmode" class="form-control">
-              <option value="" selected disabled>-Select Payment Mode-</option>
-              <option value="cod">Cash On Delivery</option>
-              <option value="netbanking">Net Banking</option>
-              <option value="cards">Debit/Credit Card</option>
-            </select>
+            Street Name : <input name="mail_address" class="form-control" placeholder="Enter your Street Name"
+            value="<?php 
+              if(!empty($_POST['mail_address'])){
+                echo $_POST['mail_address'];
+              }
+            ?>">
           </div>
           <div class="form-group">
-            <input type="submit" name="submit" value="Place Order" class="btn btn-danger btn-block">
+            Postal Code<input name="postal_code" class="form-control" placeholder="Enter the Postal Code" required
+            value="<?php 
+              if(!empty($_POST['postal_code'])){
+                echo $_POST['postal_code'];
+              }
+            ?>">
           </div>
+          <div class="form-group">
+            Credit Card Number : <input name="card_number" type="number" class="form-control" placeholder="Enter your credit card number" required
+            value="<?php 
+              if(!empty($_POST['card_number'])){
+                echo $_POST['card_number'];
+              }
+            ?>">
+          </div>
+          <div class="form-group">
+            <!-- <p>Save your information before submitting</p> -->
+            <button formaction="store_data.php" name="submit" value="Oder" class="btn btn-success btn-block">Order your item</button>
+          </div>
+          
         </form>
       </div>
     </div>

@@ -1,11 +1,6 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Instafood</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css' />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css' />
@@ -28,16 +23,18 @@
                 <a class="nav-link active" href="index.php">
                 <i class="fas fa-utensils"></i>&nbsp;&nbsp;Products</a>
         </li>
+
+        <li class="nav-item">
+                 <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i> 
+                 <span id="cart-item" class="badge badge-danger">Orders</span></a>
+        </li>
         
         <li class="nav-item">
            <a class="nav-link" href="final_checkout.php">
            <i class="fas fa-money-check-alt mr-2"></i>Checkout</a>
         </li>
 
-        <li class="nav-item">
-                 <a class="nav-link" href="cart.php"><i class="fas fa-shopping-cart"></i> 
-                 <span id="cart-item" class="badge badge-danger"></span></a>
-        </li>
+        
       </ul>
     </div>
   </nav>
@@ -51,8 +48,8 @@
   			require('./database/mysqli_connect/mysqli_connect.php');
 
         $query = "SELECT * FROM product";
-  			$result = @mysqli_query($dbc, $query) or die("Error in db records : ". mysqli_error($dbc));
-  			while ($row = mysqli_fetch_assoc($result)):
+  			$result = mysqli_query($dbc, $query) or die("Error in db records : ". mysqli_error($dbc));
+  			while ($row = mysqli_fetch_array($result)):
   		?>
 
 	
@@ -60,7 +57,7 @@
         <div class="card-deck">
 
           <div class="card p-2 border-secondary mb-2">
-            <img src="<?= $row['product_image'] ?>" class="card-img-top" height="250">
+            <img src="<?php echo $row['product_image'] ?>" class="card-img-top" height="250">
             <div class="card-body p-1">
               <h4 class="card-title text-center text-info">
               <?php 
@@ -69,27 +66,35 @@
               <h5 class="card-text text-center text-danger"><i class="fas fa-dollar-sign">
               </i>&nbsp;&nbsp;
               <?php 
-              echo number_format($row['product_price'],2); 
+              echo $row['product_price']; 
               ?></h5>
             </div>
             <div class="card-footer p-1">
-              <form method="post" action="action.php" class="form-submit">
+              <form method="post" action="cart_functionality.php" class="form-submit">
                 <div class="row p-2">
                   <div class="col-md-6 py-1 pl-4">
                     <b>Quantity : </b>
                   </div>
                   <div class="col-md-6">
-                    <input type="number" class="form-control pqty" name="pqty" value="<?php echo $row['product_qty']; ?>">
+                    <input type="number" min="0" max="20" class="form-control pqty" name="pqty" value="<?php 
+                    if (isset($_POST['pqty'])){
+                      echo $row['product_qty'];
+                    }
+                     ?>">
                   </div>
                 </div>
-                <input type="hidden" class="pid" name="pid" value="<?php echo $row['id']; ?>">
-                <input type="hidden" class="pname" name="pname" value="<?php echo $row['product_name']; ?>">
-                <input type="hidden" class="pprice" name="pprice" value="<?php echo $row['product_price']; ?>">
-                <input type="hidden" class="pimage" name="pimage" value="<?php echo $row['product_image']; ?>">
-                <input type="hidden" class="pcode" name="pcode" value="<?php echo $row['product_code']; ?>">
+                <input type="hidden" class="pid" name="pid" value="<?php
+                 if (isset($_POST['pid'])){
+                  echo $row['id'];
+                }
+                 ?>">
+                <input type="hidden" class="pname" name="pname" value="<?php 
+                echo $row['product_name']; ?>">
+                <input type="hidden" class="pprice" name="pprice" value="<?php 
+                echo $row['product_price']; ?>">
 
-                <button class="btn btn-info btn-block addItemBtn" name="button">
-                    <i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Add to cart
+                <button class="btn btn-info btn-block" name="button">
+                    <i class="fas fa-cart-plus"></i>&nbsp;&nbsp;Add Item
                 </button>
               </form>
             </div>
@@ -99,6 +104,17 @@
       <?php endwhile; ?>
     </div>
   </div>
+  <div>
+
+  <form method="get">
+  
+  <button type="submit" formaction="navigation.php" class="btn btn-info btn-block">
+                    Go to Cart</button>
+</form>
+  <!-- <button type="submit" formaction="/action_page2.php" class="btn btn-info btn-block">
+                    Go to Cart</button>
+                    <button type="submit" formaction="/action_page2.php">Submit to another page</button>
+  </div> -->
 
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js'></script>
